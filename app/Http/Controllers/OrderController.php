@@ -55,13 +55,13 @@ class OrderController extends Controller
 
     public function laporan(Request $request) {
         $selectedMonth = $request->input('month', Carbon::now()->format('Y-m'));
-        $orders = Order::with('user', 'orderDetail')->whereRaw('DATE_FORMAT(created_at, "%Y-%m") = ?', [$selectedMonth])
-            ->get();
 
-        // $orders = $this->orderService->getOrdersThisMonth();
+        $orders = $this->orderService->getOrdersByMonth($selectedMonth);
+
+        $totalAmount = $this->orderService->getTotalAmount($selectedMonth);
 
         $availableMonth = $this->orderService->getAvailableMonth();
 
-        return inertia('Laporan/Index', compact('orders', 'availableMonth', 'selectedMonth'));
+        return inertia('Laporan/Index', compact('orders', 'availableMonth', 'selectedMonth', 'totalAmount'));
     }
 }

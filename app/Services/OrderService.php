@@ -60,15 +60,20 @@ class OrderService
         });
     }
 
-    public function getOrdersThisMonth() {
-        return Order::with('user', 'orderDetail')->whereMonth('created_at', now()->month)
-            ->whereYear('created_at', now()->year)
-            ->get();
+    public function getOrdersByMonth($selectedMonth) {
+        return Order::with('user', 'orderDetail')->whereRaw('DATE_FORMAT(created_at, "%Y-%m") = ?', [$selectedMonth])
+        ->get();
     }
 
     public function getAvailableMonth() {
         return fn () => Order::selectRaw('DISTINCT DATE_FORMAT(created_at, "%Y-%m") as month')
             ->orderBy('month', 'desc')
             ->pluck('month');
+    }
+
+    public function getTotalAmount($selectedMonth) {
+        return Order::whereRaw('DATE_FORMAT(orders.created_at, "%Y-%m") = ?', [$selectedMonth])
+        ->join('order_details', 'orders.id', '=', 'order_details.order_id')
+        ->sum('order_details.amount');
     }
 }

@@ -4,7 +4,7 @@
         <template #title>Laporan Order {{ formatMonth(selectedMonth as string) }} </template>
         <template #desc> Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nihil neque ratione deleniti. </template>
 
-        <h3>Total pesanan : {{ orders?.length }} </h3>
+        <h3 class="text-xl font-semibold mb-3">Total pendapatan : {{ formatCurrency(totalAmount) }} </h3>
 
         <div class="max-w-sm">
             <Select v-model="selectedMonth" @update:modelValue="filterOrders">
@@ -76,6 +76,7 @@ const props = defineProps({
     orders: Object,
     availableMonth: Array,
     selectedMonth: String,
+    totalAmount: Number,
 });
 
 const selectedMonth = ref(props.selectedMonth);
@@ -92,7 +93,7 @@ const filterOrders = () => {
         route('dashboard.laporan'),
         { month: selectedMonth.value },
         { 
-            only: ['orders'],
+            only: ['orders', 'totalAmount'],
             preserveState: true, 
             preserveScroll: true
         }
