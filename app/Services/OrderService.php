@@ -59,4 +59,16 @@ class OrderService
             Event::dispatch(new OrderStatusUpdated($order));
         });
     }
+
+    public function getOrdersThisMonth() {
+        return Order::with('user', 'orderDetail')->whereMonth('created_at', now()->month)
+            ->whereYear('created_at', now()->year)
+            ->get();
+    }
+
+    public function getAvailableMonth() {
+        return fn () => Order::selectRaw('DISTINCT DATE_FORMAT(created_at, "%Y-%m") as month')
+            ->orderBy('month', 'desc')
+            ->pluck('month');
+    }
 }

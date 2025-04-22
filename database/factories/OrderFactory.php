@@ -22,8 +22,16 @@ class OrderFactory extends Factory
             'order_number' => 'ORD-' . uniqid(),
             'quantity' => fake()->randomFloat(1, 5, 20),
             'status' => fake()->randomElement(['diterima', 'diproses', 'selesai', 'lunas', 'belum lunas']),
-            'pickup_date' => now(),
-            'estimated_date' => now()->addDays(3)
+            'created_at' => $createdAt = collect([
+                now(),
+                now()->addDay(),
+                now()->addDays(12),
+                now()->subMonth(),
+                now()->subMonths(rand(2, 4))
+                ])->random(1)->first(),
+            'pickup_date' => $createdAt,
+            'estimated_date' => $createdAt->addDays(rand(2, 4)),
+            'updated_at' => $createdAt
         ];
     }
 }

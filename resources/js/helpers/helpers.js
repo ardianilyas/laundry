@@ -11,4 +11,4 @@ export function formatCurrency(amount) {
       currency: 'IDR',
       minimumFractionDigits: 0, // Rupiah typically doesn’t use decimals
     }).format(amount);
-  }
+}

@@ -8,9 +8,9 @@ use App\Models\Order;
 use App\Models\Service;
 use App\Models\User;
 use App\Services\OrderService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Event;
 
 class OrderController extends Controller
 {
@@ -51,5 +51,17 @@ class OrderController extends Controller
     public function history () {
         $orders = Auth::user()->orders()->latest()->paginate();
         return inertia('Orders/History', compact('orders'));
+    }
+
+    public function laporan(Request $request) {
+        $selectedMonth = $request->input('month', Carbon::now()->format('Y-m'));
+        $orders = Order::with('user', 'orderDetail')->whereRaw('DATE_FORMAT(created_at, "%Y-%m") = ?', [$selectedMonth])
+            ->get();
+
+        // $orders = $this->orderService->getOrdersThisMonth();
+
+        $availableMonth = $this->orderService->getAvailableMonth();
+
+        return inertia('Laporan/Index', compact('orders', 'availableMonth', 'selectedMonth'));
     }
 }

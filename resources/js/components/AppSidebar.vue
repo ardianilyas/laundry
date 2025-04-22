@@ -24,6 +24,12 @@ const mainNavItems: NavItem[] = [
         isAdmin: true
     },
     {
+        title: 'Laporan',
+        href: '/dashboard/laporan',
+        icon: FileClock,
+        isAdmin: true
+    },
+    {
         title: 'Pesanan',
         href: '/dashboard/orders',
         icon: NotepadText,
