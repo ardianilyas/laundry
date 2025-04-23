@@ -14,9 +14,11 @@ return new class extends Migration
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('order_id');
+            $table->string('external_id');
             $table->decimal('amount');
-            $table->string('payment_method');
-            $table->string('payment_status');
+            $table->string('status')->default('PENDING');
+            $table->string('payment_method')->nullable();
+            $table->string('payment_status')->nullable();
             $table->timestamps();
         });
     }

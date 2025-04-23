@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('order_id');
             $table->foreignId('service_id');
             $table->decimal('amount');
+            $table->string('invoice_url')->nullable();
             $table->enum('payment_status', ['paid', 'unpaid'])->default('unpaid');
             $table->timestamps();
         });

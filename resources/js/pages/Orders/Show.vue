@@ -28,7 +28,17 @@
                     </p>
                 </div>
             </div>
-            <Button class="mt-4" v-if="order?.order_detail.payment_status === 'unpaid'">Bayar Online</Button>
+            <div class="mt-4 flex gap-4 items-center">
+                <div>
+                    <Button :disabled="invoiceUrl" @click="pay" class="" v-if="order?.order_detail.payment_status === 'unpaid'" >Generate Link</Button>
+                </div>
+
+                <div v-if="order?.order_detail.payment_status !== 'paid'" class="h-full flex items-center">
+                    <a class="inline-flex text-blue-500 hover:text-blue-600 underline" v-if="invoiceUrl" :href="invoiceUrl" target="_blank">
+                        Payment link
+                    </a>
+                </div>
+            </div>
         </div>
     </AppLayout>
 </template>
@@ -39,16 +49,21 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import OrderStatus from '@/components/OrderStatus.vue';
 import { Button } from "@/components/ui/button"
 import { formatCurrency } from '@/helpers/helpers';
-import { Head } from '@inertiajs/vue3';
+import { Head, router } from '@inertiajs/vue3';
 
 const props = defineProps({
     order: Object,
 });
 
 const localOrder = ref(props.order);
+const invoiceUrl = ref(localOrder.value?.order_detail?.invoice_url);
+
+const pay = () => {
+    router.get(route('dashboard.orders.payment', localOrder?.value?.id));
+}
 
 onMounted(() => {
-    if(localOrder?.value.id) {
+    if(localOrder?.value?.id) {
         window.Echo.private(`order.${localOrder.value.id}`)
             .listen('.order.status.updated', (e: any) => {
                 if (localOrder.value) {
