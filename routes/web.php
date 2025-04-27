@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LayananController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentController;
 use Illuminate\Support\Facades\Auth;
@@ -18,6 +19,9 @@ Route::get('dashboard', function () {
 
 Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->group(function () {
     Route::resource('orders', OrderController::class);
+
+    Route::resource('layanan', LayananController::class);
+
     Route::get('orders/{order}/{status}', [OrderController::class, 'status'])->name('orders.status');
     Route::get('/laporan', [OrderController::class, 'laporan'])->name('laporan');
     Route::get('orders-history', [OrderController::class, 'history'])->name('orders.history');
