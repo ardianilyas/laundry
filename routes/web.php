@@ -18,12 +18,14 @@ Route::get('dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->group(function () {
-    Route::resource('orders', OrderController::class);
+    
+    Route::middleware('role_or_permission:admin')->group(function () {
+        Route::resource('orders', OrderController::class);
+        Route::resource('layanan', LayananController::class);
+        Route::get('/laporan', [OrderController::class, 'laporan'])->name('laporan');
+        Route::get('orders/{order}/{status}', [OrderController::class, 'status'])->name('orders.status');
+    });
 
-    Route::resource('layanan', LayananController::class);
-
-    Route::get('orders/{order}/{status}', [OrderController::class, 'status'])->name('orders.status');
-    Route::get('/laporan', [OrderController::class, 'laporan'])->name('laporan');
     Route::get('orders-history', [OrderController::class, 'history'])->name('orders.history');
 
     Route::get('pay/{order}', [PaymentController::class, 'createInvoice'])->name('orders.payment');
