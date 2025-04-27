@@ -8,7 +8,7 @@
 
         <div class="max-w-sm">
             <Select v-model="selectedMonth" @update:modelValue="filterOrders">
-                <SelectTrigger>Select month</SelectTrigger>
+                <SelectTrigger> {{ formatMonth(selectedMonth as string) }} </SelectTrigger>
                 <SelectContent> 
                     <SelectItem v-for="month in availableMonth" :key="month" :value="month"> {{ formatMonth(month) }} </SelectItem>
                 </SelectContent>
@@ -64,6 +64,7 @@ import {
 } from "@/components/ui/table"
 import {
   Select,
+  SelectValue,
   SelectContent,
   SelectItem,
   SelectTrigger,
