@@ -4,15 +4,18 @@
         <template #title>Laporan Order {{ formatMonth(selectedMonth as string) }} </template>
         <template #desc> Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nihil neque ratione deleniti. </template>
 
+        
+        
         <h3 class="text-xl font-semibold mb-3">Total pendapatan : {{ formatCurrency(totalAmount) }} </h3>
-
-        <div class="max-w-sm">
+        
+        <div class="max-w-xl flex gap-5 items-center">
             <Select v-model="selectedMonth" @update:modelValue="filterOrders">
                 <SelectTrigger> {{ formatMonth(selectedMonth as string) }} </SelectTrigger>
                 <SelectContent> 
                     <SelectItem v-for="month in availableMonth" :key="month" :value="month"> {{ formatMonth(month) }} </SelectItem>
                 </SelectContent>
             </Select>
+            <Button @click="downloadPdf" type="submit">Download PDF</Button>
         </div>
 
         <div class="my-4 bg-white shadow-md rounded-md p-6">
@@ -50,9 +53,10 @@
 </template>
 
 <script setup lang="ts">
-import { Head, router } from '@inertiajs/vue3';
+import { Head, router, Link } from '@inertiajs/vue3';
 import AppLayout from '@/layouts/AppLayout.vue';
 import OrderStatus from '@/components/OrderStatus.vue';
+import { Button } from "@/components/ui/button"
 import {
   Table,
   TableBody,
@@ -64,7 +68,6 @@ import {
 } from "@/components/ui/table"
 import {
   Select,
-  SelectValue,
   SelectContent,
   SelectItem,
   SelectTrigger,
@@ -100,4 +103,9 @@ const filterOrders = () => {
         }
     );
 };
+
+const downloadPdf = () => {
+    const url = '/download?month=' + selectedMonth.value;
+    window.open(url, '_blank');
+}
 </script>

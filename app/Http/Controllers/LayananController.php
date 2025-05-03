@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\LayananRequest;
 use App\Models\Service;
-use App\Service\LayananService;
 use Illuminate\Http\Request;
+use App\Services\LayananService;
+use App\Http\Requests\LayananRequest;
 
 class LayananController extends Controller
 {

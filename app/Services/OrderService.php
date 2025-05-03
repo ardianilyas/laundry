@@ -72,8 +72,10 @@ class OrderService
     }
 
     public function getTotalAmount($selectedMonth) {
-        return Order::whereRaw('DATE_FORMAT(orders.created_at, "%Y-%m") = ?', [$selectedMonth])
-        ->join('order_details', 'orders.id', '=', 'order_details.order_id')
-        ->sum('order_details.amount');
+        return DB::table('orders')
+                    ->whereRaw('DATE_FORMAT(orders.created_at, "%Y-%m") = ?', [$selectedMonth])
+                    ->where('orders.status', 'lunas')
+                    ->join('order_details', 'orders.id', '=', 'order_details.order_id')
+                    ->sum('order_details.amount');
     }
 }

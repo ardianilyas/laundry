@@ -3,6 +3,7 @@
 use App\Http\Controllers\LayananController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\PdfController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -33,5 +34,9 @@ Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->group(functi
 
 Route::post('/xendit/webhook', [PaymentController::class, 'handleWebhook'])->name('xendit.webhook');
 
+Route::get('/download', [PdfController::class, 'download'])->name('download');
+Route::get('/debug-node', function () {
+    return shell_exec('which node') . "\n" . shell_exec('which npm');
+});
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';
