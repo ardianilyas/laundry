@@ -53,7 +53,7 @@
 </template>
 
 <script setup lang="ts">
-import { Head, router, Link } from '@inertiajs/vue3';
+import { Head, router } from '@inertiajs/vue3';
 import AppLayout from '@/layouts/AppLayout.vue';
 import OrderStatus from '@/components/OrderStatus.vue';
 import { Button } from "@/components/ui/button"
@@ -78,7 +78,7 @@ import { ref } from 'vue';
 
 const props = defineProps({
     orders: Object,
-    availableMonth: Array,
+    availableMonth: Array<string>,
     selectedMonth: String,
     totalAmount: Number,
 });
