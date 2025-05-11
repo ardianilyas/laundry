@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { formatCurrency } from '@/helpers/helpers';
+import TransactionChart from '@/components/TransactionChart.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/vue3';
@@ -8,6 +9,7 @@ defineProps({
     totalPendapatan: Number,
     totalUser: Number,
     totalTransaksi: Number,
+    monthlyTransactions: Array
 });
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -23,7 +25,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="flex min-h-screen flex-1 flex-col gap-4 rounded-xl p-4">
-            <div class="grid auto-rows-min gap-4 md:grid-cols-3">
+            <div class="grid auto-rows-min gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
                 <div class="p-6 border border-slate-200 rounded-md shadow-md">
                     <h3>Total Pendapatan Bulan Ini</h3>
                     <p class="text-2xl font-semibold"> {{ formatCurrency(totalPendapatan) }} </p>
@@ -37,6 +39,7 @@ const breadcrumbs: BreadcrumbItem[] = [
                     <p class="text-2xl font-semibold"> {{ totalUser }} </p>
                 </div>
             </div>
+            <TransactionChart :monthlyTransactions="monthlyTransactions" />
         </div>
     </AppLayout>
 </template>

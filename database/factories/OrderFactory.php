@@ -27,7 +27,7 @@ class OrderFactory extends Factory
                 now()->addDay(),
                 now()->addDays(12),
                 now()->subMonth(),
-                now()->subMonths(rand(2, 4))
+                now()->subMonths(rand(2, 10))
                 ])->random(1)->first(),
             'pickup_date' => $createdAt,
             'estimated_date' => $createdAt->addDays(rand(2, 4)),

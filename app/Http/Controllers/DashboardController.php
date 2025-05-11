@@ -18,6 +18,7 @@ class DashboardController extends Controller
         $totalPendapatan = $this->orderService->getTotalAmount(now()->format('Y-m'));
         $totalUser = User::query()->count();
         $totalTransaksi = Order::query()->count();
-        return inertia('Dashboard', compact('totalPendapatan', 'totalUser', 'totalTransaksi'));
+        $monthlyTransactions = $this->orderService->getMonthlyTransactions();
+        return inertia('Dashboard', compact('totalPendapatan', 'totalUser', 'totalTransaksi', 'monthlyTransactions'));
     }
 }

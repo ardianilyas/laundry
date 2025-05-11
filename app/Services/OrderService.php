@@ -78,4 +78,16 @@ class OrderService
                     ->join('order_details', 'orders.id', '=', 'order_details.order_id')
                     ->sum('order_details.amount');
     }
+
+    public function getMonthlyTransactions() {
+        $startDate = now()->subMonth(5)->startOfMonth();
+        return DB::table('orders')
+        ->join('order_details', 'orders.id', '=', 'order_details.order_id')
+        ->where('orders.status', 'lunas')
+        ->whereDate('orders.created_at', '>=', $startDate)
+        ->selectRaw("DATE_FORMAT(orders.created_at, '%M %Y') as month, SUM(order_details.amount) as total")
+        ->groupBy('month')
+        ->orderByRaw("MIN(orders.created_at)")
+        ->get();
+    }
 }
