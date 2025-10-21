@@ -2,8 +2,10 @@
 
 namespace App\Services;
 
+use App\Events\OrderStatusUpdated;
 use App\Models\Order;
 use App\Models\Payment;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Log;
 use Xendit\Invoice\CreateInvoiceRequest;
 
@@ -55,6 +57,8 @@ class PaymentService
                 'payment_method' => $payload['payment_method'],
                 'payment_status' => 'PAID'
             ]);
+
+            Event::dispatch(new OrderStatusUpdated($order));
 
             Log::info('Payment & order updated successfully with status SUCCESS: ', [$payment, $order]);
 

@@ -8,7 +8,7 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
 });
 
 Broadcast::channel('order.{orderId}', function ($user, $orderId) {
-    // return true;
-    $order = Order::findOrFail($orderId);
-    return $user->id === $order->user_id;
+    return true;
+    // $order = Order::findOrFail($orderId);
+    // return $user->id === $order->user_id;
 });

@@ -24,7 +24,9 @@ class PaymentController extends Controller
 
         $apiInstance = new InvoiceApi();
 
-        $result = $apiInstance->createInvoice($create_invoice_request);
+        $for_user_id = null;
+
+        $result = $apiInstance->createInvoice($create_invoice_request, $for_user_id);
 
         $order->orderDetail()->update([
             'invoice_url' => $result->getInvoiceUrl(),

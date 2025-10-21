@@ -28,6 +28,8 @@ Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->group(functi
 
     Route::get('orders-history', [OrderController::class, 'history'])->name('orders.history');
 
+    Route::get("/orders/{order}", [OrderController::class, 'show'])->name('orders.show');
+
     Route::get('pay/{order}', [PaymentController::class, 'createInvoice'])->name('orders.payment');
 });
 
