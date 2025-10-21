@@ -33,7 +33,7 @@ const mainNavItems: NavItem[] = [
         title: 'Laporan',
         href: '/dashboard/laporan',
         icon: FileClock,
-        isAdmin: true
+        isAdmin: hasRole('admin')
     },
     {
         title: 'Pesanan',

@@ -1,16 +1,15 @@
 <?php
 
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\LayananController;
-use App\Http\Controllers\OrderController;
-use App\Http\Controllers\PaymentController;
-use App\Http\Controllers\PdfController;
-use App\Services\OrderService;
+use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
+use App\Http\Controllers\PdfController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\LayananController;
+use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\DashboardController;
 
-Auth::loginUsingId(1);
+// Auth::loginUsingId(1);
 
 Route::get('/', function () {
     return Inertia::render('Welcome');
