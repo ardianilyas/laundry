@@ -27,24 +27,43 @@ class OrderService
 
     public function storeNewOrder($data) {
         return DB::transaction(function () use ($data) {
+            $maxEstimated = collect($data['services'])->max(fn($item) => $item['estimated_date']);
+
             $order = Order::query()->create([
                 'user_id' => $data['user_id'],
                 'order_number' => 'ORD-' . uniqid(),
-                'quantity' => $data['quantity'],
                 'status' => 'diterima',
                 'pickup_date' => now(),
-                'estimated_date' => now()->addDays($data['estimated_date'])
+                'estimated_date' => now()->addDays($maxEstimated),
             ]);
 
             Log::info("Order created: ", [$order]);
     
-            $service = Service::where('id', $data['service_id'])->first();
-            $amount = $data['quantity'] * $service['price'];
-    
-            $order->orderDetail()->create([
-                'service_id' => $service['id'],
-                'amount' => $amount,
+            $totalAmount = 0;
+
+            foreach($data['services'] as $item) {
+                $service = Service::query()->findOrFail($item['service_id']);
+
+                $quantity = $item['quantity'];
+                $estimated = $item['estimated_date'];
+                $amount = $quantity * $service->price;
+                $totalAmount += $amount;
+
+                $order->orderDetails()->create([
+                    'service_id' => $service->id,
+                    'quantity' => $quantity,
+                    'estimated_date' => now()->addDays($estimated),
+                    'price' => $service->price,
+                    'amount' => $amount,
+                ]);
+            }
+
+            $order->update([
+                'quantity' => collect($data['services'])->sum('quantity'),
+                'total_amount' => $totalAmount
             ]);
+
+            return $order;
         });
     }
 

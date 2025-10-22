@@ -2,46 +2,108 @@
     <Head title="Buat Pesanan" />
     <AppLayout>
         <template #title>Buat Pesanan</template>
-        <template #desc>Buat pesanan disini</template>
+        <template #desc>Buat pesanan dengan beberapa layanan</template>
 
         <div class="my-4 bg-white shadow-md rounded-md p-6">
-            <form @submit.prevent="submit" class="max-w-xl [&>div]:mb-2">
+            <form @submit.prevent="submit" class="max-w-2xl space-y-4">
+                <!-- Pelanggan -->
                 <div>
                     <Label>Nama Pelanggan</Label>
                     <Select v-model="form.user_id">
                         <SelectTrigger>
-                            <SelectValue placeholder="Nama pelanggan" />
+                            <SelectValue placeholder="Pilih pelanggan" />
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem v-for="user in users" :key="user" :value="user.id"> {{ user.name }} </SelectItem>
+                            <SelectItem
+                                v-for="user in users"
+                                :key="user.id"
+                                :value="user.id"
+                            >
+                                {{ user.name }}
+                            </SelectItem>
                         </SelectContent>
                     </Select>
                     <InputError :message="form.errors.user_id" />
                 </div>
+
+                <!-- Daftar layanan -->
                 <div>
                     <Label>Layanan</Label>
-                    <Select v-model="form.service_id">
-                        <SelectTrigger>
-                            <SelectValue placeholder="Layanan" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem v-for="service in services" :key="service" :value="service.id"> {{ service.name }} </SelectItem>
-                        </SelectContent>
-                    </Select>
-                    <InputError :message="form.errors.service_id" />
+
+                    <div
+                        v-for="(item, index) in form.services"
+                        :key="index"
+                        class="border rounded-md p-4 mb-2 space-y-2"
+                    >
+                        <div class="flex justify-between items-center">
+                            <h4 class="font-medium">Layanan {{ index + 1 }}</h4>
+                            <button
+                                type="button"
+                                class="text-red-500 text-sm"
+                                @click="removeService(index)"
+                                v-if="form.services.length > 1"
+                            >
+                                Hapus
+                            </button>
+                        </div>
+
+                        <div>
+                            <Label>Layanan</Label>
+                            <Select v-model="item.service_id">
+                                <SelectTrigger>
+                                    <SelectValue placeholder="Pilih layanan" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem
+                                        v-for="service in services"
+                                        :key="service.id"
+                                        :value="service.id"
+                                    >
+                                        {{ service.name }}
+                                    </SelectItem>
+                                </SelectContent>
+                            </Select>
+                            <InputError
+                                :message="form.errors[`services.${index}.service_id` as keyof typeof form.errors]"
+                            />
+                        </div>
+
+                        <div>
+                            <Label>Berat (kg)</Label>
+                            <Input v-model="item.quantity" placeholder="Berat" />
+                            <InputError
+                                :message="form.errors[`services.${index}.quantity` as keyof typeof form.errors]"
+                            />
+                        </div>
+
+                        <div>
+                            <Label>Estimasi hari</Label>
+                            <Input
+                                v-model="item.estimated_date"
+                                type="number"
+                                placeholder="Estimasi hari"
+                            />
+                            <InputError 
+                                :message="form.errors[`services.${index}.estimated_date` as keyof typeof form.errors]"
+                            />
+                        </div>
+                    </div>
+
+                    <Button
+                        type="button"
+                        variant="outline"
+                        class="mt-2"
+                        @click="addService"
+                    >
+                        + Tambah Layanan
+                    </Button>
                 </div>
+
+                <!-- Tombol submit -->
                 <div>
-                    <Label>Berat (kg)</Label>
-                    <Input v-model="form.quantity" placeholder="Berat" />
-                    <InputError :message="form.errors.quantity" />
-                </div>
-                <div>
-                    <Label>Estimasi hari</Label>
-                    <Input v-model="form.estimated_date" type="number" placeholder="Estimasi hari" />
-                    <InputError :message="form.errors.estimated_date" />
-                </div>
-                <div>
-                    <Button :disabled="form.processing" type="submit">Simpan</Button>
+                    <Button :disabled="form.processing" type="submit">
+                        Simpan Pesanan
+                    </Button>
                 </div>
             </form>
         </div>
@@ -69,25 +131,38 @@ defineProps({
     services: Object,
 })
 
-interface FormValues {
-  user_id: number | string;
+interface ServiceItem {
   service_id: number | string;
   quantity: number | string;
   estimated_date: number | string;
-  [key: string]: number | string;
+}
+
+interface FormValues extends Record<string, any> {
+  user_id: number | string;
+  services: ServiceItem[];
 }
 
 const form = useForm<FormValues>({
-    user_id: '',
-    service_id: '',
-    quantity: '',
-    estimated_date: ''
+  user_id: '',
+  services: [
+    { service_id: '', quantity: '', estimated_date: '' }
+  ],
 })
 
-function submit () {
-    form.post(route('dashboard.orders.store'), {
-        onSuccess: () => toast.success("Pesanan berhasil dibuat")
-    })
+function addService() {
+  form.services.push({ service_id: '', quantity: '', estimated_date: '' })
 }
 
+function removeService(index: number) {
+  form.services.splice(index, 1)
+}
+
+function submit() {    
+  form.post(route('dashboard.orders.store'), {
+    onSuccess: () => {
+      toast.success("Pesanan berhasil dibuat")
+      form.reset()
+    },
+  })
+}
 </script>

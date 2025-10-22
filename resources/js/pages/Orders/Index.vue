@@ -50,7 +50,7 @@
                         <TableCell> {{ order.user.name }} </TableCell>
                         <TableCell> {{ order.quantity }} </TableCell>
                         <TableCell> {{ order.pickup_date }} </TableCell>
-                        <TableCell> 
+                        <TableCell class="w-2/12"> 
                             <OrderStatus :status="order.status" /> 
                         </TableCell>
                         <TableCell>

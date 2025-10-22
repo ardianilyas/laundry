@@ -37,7 +37,7 @@
                         <TableCell> {{ order.order_number }} </TableCell>
                         <TableCell> {{ order.user.name }} </TableCell>
                         <TableCell> {{ order.quantity }} </TableCell>
-                        <TableCell> {{ formatCurrency(order.order_detail.amount) }} </TableCell>
+                        <TableCell> {{ formatCurrency(order.total_amount) }} </TableCell>
                         <TableCell> {{ order.pickup_date }} </TableCell>
                         <TableCell> {{ order.estimated_date }} </TableCell>
                         <TableCell>

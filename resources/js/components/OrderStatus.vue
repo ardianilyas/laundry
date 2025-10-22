@@ -1,5 +1,5 @@
 <template>
-    <span :class="statusClass" class="text-sm px-4 py-1 rounded-full">
+    <span :class="statusClass" class="text-sm px-3 py-1 rounded-full">
         {{ status }}
     </span>
 </template>
@@ -24,7 +24,7 @@ const statusClass = computed(() => {
         case 'lunas':
             return 'text-green-700 bg-green-200';
         case 'belum lunas':
-            return 'text-red-700 bg-red-200';
+            return 'text-red-700 bg-red-200 w-full';
         default:
             return 'text-gray-600 bg-gray-200';
     }

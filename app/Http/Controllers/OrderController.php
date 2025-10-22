@@ -39,7 +39,7 @@ class OrderController extends Controller
     }
 
     public function show (Order $order) {
-        $order->load(['user', 'orderDetail']);
+        $order->load(['user', 'orderDetails.service']);
         return inertia('Orders/Show', compact('order'));
     }
 

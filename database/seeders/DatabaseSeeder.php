@@ -31,6 +31,10 @@ class DatabaseSeeder extends Seeder
 
         User::factory(8)->create();
         Service::factory(2)->create();
-        Order::factory(350)->has(OrderDetail::factory(1), 'orderDetail')->create();
+
+        $this->call([
+            OrderSeeder::class,
+        ]);
+        // Order::factory(350)->has(OrderDetail::factory(1), 'orderDetail')->create();
     }
 }

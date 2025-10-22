@@ -17,18 +17,17 @@ class PaymentController extends Controller
     }
 
     public function createInvoice(Order $order) {
-        // dd($order->orderDetail->amount);
         $payment = $this->paymentService->createPaymentData($order);
-
+        
         $create_invoice_request = $this->paymentService->createInvoiceRequest($payment); 
-
+        
         $apiInstance = new InvoiceApi();
-
+        
         $for_user_id = null;
-
+        
         $result = $apiInstance->createInvoice($create_invoice_request, $for_user_id);
 
-        $order->orderDetail()->update([
+        $order->update([
             'invoice_url' => $result->getInvoiceUrl(),
         ]);
 

@@ -17,21 +17,25 @@ class OrderFactory extends Factory
      */
     public function definition(): array
     {
+        $createdAt = collect([
+            now(),
+            now()->addDay(),
+            now()->addDays(12),
+            now()->subMonth(),
+            now()->subMonths(rand(2, 10))
+        ])->random(1)->first();
+
         return [
-            'user_id' => User::all()->random()->id,
-            'order_number' => 'ORD-' . uniqid(),
-            'quantity' => fake()->randomFloat(1, 5, 20),
+            'user_id' => User::query()->inRandomOrder()->first()->id,
+            'order_number' => 'ORD-' . strtoupper(uniqid()),
             'status' => fake()->randomElement(['diterima', 'diproses', 'selesai', 'lunas', 'belum lunas']),
-            'created_at' => $createdAt = collect([
-                now(),
-                now()->addDay(),
-                now()->addDays(12),
-                now()->subMonth(),
-                now()->subMonths(rand(2, 10))
-                ])->random(1)->first(),
             'pickup_date' => $createdAt,
-            'estimated_date' => $createdAt->addDays(rand(2, 4)),
-            'updated_at' => $createdAt
+            // estimasi global order (nanti tergantung dari detail)
+            'estimated_date' => (clone $createdAt)->addDays(rand(2, 4)),
+            'total_amount' => fake()->numberBetween(50000, 200000),
+            'quantity' => fake()->numberBetween(1, 10),
+            'created_at' => $createdAt,
+            'updated_at' => $createdAt,
         ];
     }
 }

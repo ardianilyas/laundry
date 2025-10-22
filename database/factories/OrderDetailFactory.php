@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Order;
 use App\Models\Service;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -17,10 +18,21 @@ class OrderDetailFactory extends Factory
      */
     public function definition(): array
     {
+        $service = Service::query()->inRandomOrder()->first();
+        $quantity = fake()->numberBetween(1, 10);
+        $price = $service->price ?? fake()->numberBetween(5000, 20000);
+        $amount = $price * $quantity;
+
         return [
-            'service_id' => Service::all()->random()->id,
-            'amount' => fake()->numberBetween(50000, 120000),
-            'payment_status' => fake()->randomElement(['paid', 'unpaid'])
+            'order_id' => Order::query()->inRandomOrder()->first()->id ?? Order::factory(),
+            'service_id' => $service->id,
+            'quantity' => $quantity,
+            'price' => $price,
+            'amount' => $amount,
+            'estimated_date' => now()->addDays(rand(1, 5)),
+            'payment_status' => fake()->randomElement(['paid', 'unpaid']),
+            'created_at' => now(),
+            'updated_at' => now(),
         ];
     }
 }

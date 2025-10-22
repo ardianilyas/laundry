@@ -15,7 +15,7 @@ class PaymentService
         return Payment::query()->create([
             'order_id' => $order->id,
             'external_id' => 'INV-' . uniqid(),
-            'amount' => $order->orderDetail->amount,
+            'amount' => $order->total_amount,
         ]);
     }
 
@@ -48,7 +48,7 @@ class PaymentService
                 'status' => 'lunas'
             ]);
             
-            $order->orderDetail()->update([
+            $order->orderDetails()->update([
                 'payment_status' => 'paid'
             ]);
 
@@ -63,7 +63,7 @@ class PaymentService
             Log::info('Payment & order updated successfully with status SUCCESS: ', [$payment, $order]);
 
         } elseif ($payload['status'] === 'FAILED') {
-            $order->orderDetail()->update([
+            $order->orderDetails()->update([
                 'payment_status' => 'unpaid'
             ]);
 

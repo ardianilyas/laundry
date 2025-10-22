@@ -16,9 +16,11 @@ return new class extends Migration
             $table->foreignId('user_id');
             $table->string('order_number')->unique();
             $table->string('address')->nullable();
-            $table->float('quantity');
+            $table->float('quantity')->nullable();
+            $table->float('total_amount')->nullable();
             $table->enum('status', ['diterima', 'diproses', 'selesai', 'lunas', 'belum lunas'])->default('diterima');
             $table->dateTime('pickup_date');
+            $table->string('invoice_url')->nullable();
             $table->dateTime('estimated_date');
             $table->timestamps();
         });
