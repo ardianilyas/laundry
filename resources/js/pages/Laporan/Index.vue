@@ -2,10 +2,8 @@
     <Head title="Laporan" />
     <AppLayout>
         <template #title>Laporan Order {{ formatMonth(selectedMonth as string) }} </template>
-        <template #desc> Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nihil neque ratione deleniti. </template>
+        <template #desc> Daftar laporan order berdasarkan bulan. </template>
 
-        
-        
         <h3 class="text-xl font-semibold mb-3">Total pendapatan : {{ formatCurrency(totalAmount) }} </h3>
         
         <div class="max-w-xl flex gap-5 items-center">
