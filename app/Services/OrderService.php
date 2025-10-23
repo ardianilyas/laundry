@@ -80,7 +80,7 @@ class OrderService
     }
 
     public function getOrdersByMonth($selectedMonth) {
-        return Order::with('user', 'orderDetail')->whereRaw('DATE_FORMAT(created_at, "%Y-%m") = ?', [$selectedMonth])
+        return Order::with('user', 'orderDetails')->whereRaw('DATE_FORMAT(created_at, "%Y-%m") = ?', [$selectedMonth])
         ->get();
     }
 
