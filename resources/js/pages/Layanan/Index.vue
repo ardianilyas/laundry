@@ -8,7 +8,7 @@
             <Button>Create New Layanan</Button>
         </Link>
 
-        <div class="my-4 first-letter:*:bg-white rounded-md shadow-md p-6">
+        <Card>
             <Table>
                 <TableCaption>List layanan yang tersedia</TableCaption>
                 <TableHeader>
@@ -31,7 +31,7 @@
                     </TableRow>
                 </TableBody>
             </Table>
-        </div>
+        </Card>
     </AppLayout>
 </template>
 
@@ -50,6 +50,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { toast } from 'vue-sonner';
+import Card from '@/components/Card.vue';
 
 defineProps({
     services: Object

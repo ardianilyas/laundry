@@ -4,7 +4,7 @@
         <template #title>Create Layanan</template>
         <template #desc> Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolorem quis modi vitae. </template>
 
-        <div class="my-4 bg-white shadow-md rounded-md p-6">
+        <Card>
             <form @submit.prevent="submit" class="max-w-2xl [&>div]:mb-3">
                 <div>
                     <Label>Nama</Label>
@@ -20,7 +20,7 @@
                     <Button type="submit">Save</Button>
                 </div>
             </form>
-        </div>
+        </Card>
     </AppLayout>
 </template>
 
@@ -32,6 +32,7 @@ import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import InputError from '@/components/InputError.vue';
 import { toast } from 'vue-sonner';
+import Card from '@/components/Card.vue';
 
 const form = useForm({
     name: '',

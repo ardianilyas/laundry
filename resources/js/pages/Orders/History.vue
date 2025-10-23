@@ -4,7 +4,7 @@
         <template #title>Riwayat Pesanan</template>
         <template #desc>Daftar riwayat pesanan</template>
 
-        <div class="my-4 p-6 bg-white shadow-md rounded-md">
+        <Card>
             <Table>
                 <TableCaption>Daftar riwayat pesanan</TableCaption>
                 <TableHeader>
@@ -31,7 +31,7 @@
                 </TableBody>
             </Table>
             <Pagination :data="orders" />
-        </div>
+        </Card>
     </AppLayout>
 </template>
 
@@ -50,6 +50,7 @@ import {
 } from '@/components/ui/table'
 import Pagination from '@/components/Pagination.vue';
 import OrderStatus from '@/components/OrderStatus.vue';
+import Card from '@/components/Card.vue';
 
 defineProps({
     orders: Object

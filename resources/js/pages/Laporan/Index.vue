@@ -16,7 +16,7 @@
             <Button @click="downloadPdf" type="submit">Download PDF</Button>
         </div>
 
-        <div class="my-4 bg-white shadow-md rounded-md p-6">
+        <Card>
             <Table>
                 <TableCaption>Laporan order bulanan</TableCaption>
                 <TableHeader>
@@ -46,7 +46,7 @@
                     </TableRow>
                 </TableBody>
             </Table>
-        </div>
+        </Card>
     </AppLayout>
 </template>
 
@@ -73,6 +73,7 @@ import {
 
 import { formatCurrency } from '@/helpers/helpers';
 import { ref } from 'vue';
+import Card from '@/components/Card.vue';
 
 const props = defineProps({
     orders: Object,

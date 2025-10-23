@@ -8,7 +8,7 @@
             <Button>Buat pesanan</Button>
         </Link>
 
-        <div class="my-4 bg-white shadow-md rounded-md p-6">
+        <Card>
             <DropdownMenu>
                 <DropdownMenuTrigger as-child>
                     <Button class="mb-4" variant="outline">
@@ -71,7 +71,7 @@
                 </TableBody>
             </Table>
             <Pagination :data="orders" />
-        </div>
+        </Card>
     </AppLayout>
 </template>
 
@@ -100,6 +100,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import OrderStatus from '@/components/OrderStatus.vue'
 import Pagination from '@/components/Pagination.vue';
+import Card from '@/components/Card.vue';
 
 defineProps({
     orders: Object

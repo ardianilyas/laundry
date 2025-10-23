@@ -4,7 +4,7 @@
         <template #title>Buat Pesanan</template>
         <template #desc>Buat pesanan dengan beberapa layanan</template>
 
-        <div class="my-4 bg-white shadow-md rounded-md p-6">
+        <Card>
             <form @submit.prevent="submit" class="max-w-2xl space-y-4">
                 <!-- Pelanggan -->
                 <div>
@@ -106,7 +106,7 @@
                     </Button>
                 </div>
             </form>
-        </div>
+        </Card>
     </AppLayout>
 </template>
 
@@ -125,6 +125,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { toast } from 'vue-sonner';
+import Card from '@/components/Card.vue';
 
 defineProps({
     users: Object,

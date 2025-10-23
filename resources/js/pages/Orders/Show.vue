@@ -4,7 +4,7 @@
         <template #title>Detail Pesanan</template>
         <template #desc>Lihat detail pesanan</template>
 
-        <div class="my-4 p-6 bg-white shadow-md rounded-md">
+        <Card>
             <h4 class="mb-2 text-2xl font-semibold text-slate-800">
                 Order Number : {{ localOrder.order_number }}
             </h4>
@@ -104,7 +104,7 @@
                     </a>
                 </div>
             </div>
-        </div>        
+        </Card>        
     </AppLayout>
 </template>
 
@@ -115,6 +115,7 @@ import OrderStatus from '@/components/OrderStatus.vue';
 import { Button } from "@/components/ui/button"
 import { formatCurrency } from '@/helpers/helpers';
 import { Head, router } from '@inertiajs/vue3';
+import Card from '@/components/Card.vue';
 
 const props = defineProps({
     order: Object,
