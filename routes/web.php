@@ -4,6 +4,7 @@ use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PdfController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\LayananController;
 use App\Http\Controllers\PaymentController;
@@ -12,8 +13,8 @@ use App\Http\Controllers\DashboardController;
 // Auth::loginUsingId(1);
 
 Route::get('/', function () {
-    return Inertia::render('Welcome');
-})->name('home');
+    return redirect(route('dashboard'));
+})->name('home')->middleware('auth');
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth'])->name('dashboard');
 
@@ -24,6 +25,10 @@ Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->group(functi
         Route::resource('layanan', LayananController::class);
         Route::get('/laporan', [OrderController::class, 'laporan'])->name('laporan');
         Route::get('orders/{order}/{status}', [OrderController::class, 'status'])->name('orders.status');
+
+        Route::get('/users', [UserController::class, 'index'])->name('users.index');
+        Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
+        Route::post('/users', [UserController::class, 'store'])->name('users.store');
     });
 
     Route::get('orders-history', [OrderController::class, 'history'])->name('orders.history');
