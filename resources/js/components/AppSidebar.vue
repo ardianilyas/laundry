@@ -4,7 +4,7 @@ import NavUser from '@/components/NavUser.vue';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/vue3';
-import { LayoutGrid, NotepadText, FileClock, WashingMachine } from 'lucide-vue-next';
+import { LayoutGrid, NotepadText, FileClock, WashingMachine, User } from 'lucide-vue-next';
 import AppLogo from './AppLogo.vue';
 import useRoles from '@/composables/useRoles';
 
@@ -40,7 +40,13 @@ const mainNavItems: NavItem[] = [
         href: '/dashboard/orders',
         icon: NotepadText,
         isAdmin: hasRole('admin')
-    }
+    },
+    {
+        title: 'Users',
+        href: '/dashboard/users',
+        icon: User,
+        isAdmin: hasRole('admin')
+    },
 ];
 </script>
 
