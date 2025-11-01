@@ -1,0 +1,1 @@
+import{c,b as n,y as a}from"./app-CYJ_YUB3.js";const d=(e,t)=>{const o=e.__vccOpts||e;for(const[r,s]of t)o[r]=s;return o},_={},l={class:"my-4 p-6 bg-white shadow-md rounded-md"};function f(e,t){return n(),c("div",l,[a(e.$slots,"default")])}const i=d(_,[["render",f]]);export{i as C};

@@ -1,0 +1,1 @@
+function u(r,e){return!r||!r.current_page||!r.per_page?"":(r.current_page-1)*r.per_page+e+1}function c(r){return new Intl.NumberFormat("id-ID",{style:"currency",currency:"IDR",minimumFractionDigits:0}).format(r)}export{u as d,c as f};
