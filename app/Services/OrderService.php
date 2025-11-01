@@ -72,41 +72,47 @@ class OrderService
             $order->update(['status' => $status]);
 
             if ($status === 'lunas') {
-                $order->orderDetail->update(['payment_status' => 'paid']);
+                $order->orderDetails()->update(['payment_status' => 'paid']);
             }
 
             Event::dispatch(new OrderStatusUpdated($order));
         });
     }
 
-    public function getOrdersByMonth($selectedMonth) {
-        return Order::with('user', 'orderDetails')->whereRaw('DATE_FORMAT(created_at, "%Y-%m") = ?', [$selectedMonth])
-        ->get();
+    public function getOrdersByMonth($selectedMonth)
+    {
+        return Order::with('user', 'orderDetails')
+            ->whereRaw("TO_CHAR(created_at, 'YYYY-MM') = ?", [$selectedMonth])
+            ->get();
     }
 
-    public function getAvailableMonth() {
-        return fn () => Order::selectRaw('DISTINCT DATE_FORMAT(created_at, "%Y-%m") as month')
+    public function getAvailableMonth()
+    {
+        return fn() => Order::selectRaw("DISTINCT TO_CHAR(created_at, 'YYYY-MM') AS month")
             ->orderBy('month', 'desc')
             ->pluck('month');
     }
 
-    public function getTotalAmount($selectedMonth) {
+    public function getTotalAmount($selectedMonth)
+    {
         return DB::table('orders')
-                    ->whereRaw('DATE_FORMAT(orders.created_at, "%Y-%m") = ?', [$selectedMonth])
-                    ->where('orders.status', 'lunas')
-                    ->join('order_details', 'orders.id', '=', 'order_details.order_id')
-                    ->sum('order_details.amount');
+            ->whereRaw("TO_CHAR(orders.created_at, 'YYYY-MM') = ?", [$selectedMonth])
+            ->where('orders.status', 'lunas')
+            ->join('order_details', 'orders.id', '=', 'order_details.order_id')
+            ->sum('order_details.amount');
     }
 
-    public function getMonthlyTransactions() {
+    public function getMonthlyTransactions()
+    {
         $startDate = now()->subMonth(5)->startOfMonth();
+
         return DB::table('orders')
-        ->join('order_details', 'orders.id', '=', 'order_details.order_id')
-        ->where('orders.status', 'lunas')
-        ->whereDate('orders.created_at', '>=', $startDate)
-        ->selectRaw("DATE_FORMAT(orders.created_at, '%M %Y') as month, SUM(order_details.amount) as total")
-        ->groupBy('month')
-        ->orderByRaw("MIN(orders.created_at)")
-        ->get();
+            ->join('order_details', 'orders.id', '=', 'order_details.order_id')
+            ->where('orders.status', 'lunas')
+            ->whereDate('orders.created_at', '>=', $startDate)
+            ->selectRaw("TO_CHAR(orders.created_at, 'Mon YYYY') AS month, SUM(order_details.amount) AS total")
+            ->groupBy('month')
+            ->orderByRaw("MIN(orders.created_at)")
+            ->get();
     }
 }
