@@ -24,7 +24,7 @@
                     <td class="border p-2">{{ $loop->iteration }}</td>
                     <td class="border p-2">{{ $order->order_number }}</td>
                     <td class="border p-2">{{ $order->quantity }}</td>
-                    <td class="border p-2">Rp {{ number_format($order->orderDetail->amount, 0, ',', '.') }}</td>
+                    <td class="border p-2">Rp {{ number_format($order->total_amount, 0, ',', '.') }}</td>
                     <td class="border p-2">{{ $order->status }}</td>
                 </tr>
                 @endforeach
