@@ -82,13 +82,13 @@ class OrderService
     public function getOrdersByMonth($selectedMonth)
     {
         return Order::with('user', 'orderDetails')
-            ->whereRaw("TO_CHAR(created_at, 'YYYY-MM') = ?", [$selectedMonth])
+            ->whereRaw("TO_CHAR(pickup_date, 'YYYY-MM') = ?", [$selectedMonth])
             ->get();
     }
 
     public function getAvailableMonth()
     {
-        return fn() => Order::selectRaw("DISTINCT TO_CHAR(created_at, 'YYYY-MM') AS month")
+        return fn() => Order::selectRaw("DISTINCT TO_CHAR(pickup_date, 'YYYY-MM') AS month")
             ->orderBy('month', 'desc')
             ->pluck('month');
     }
@@ -96,7 +96,7 @@ class OrderService
     public function getTotalAmount($selectedMonth)
     {
         return DB::table('orders')
-            ->whereRaw("TO_CHAR(orders.created_at, 'YYYY-MM') = ?", [$selectedMonth])
+            ->whereRaw("TO_CHAR(orders.pickup_date, 'YYYY-MM') = ?", [$selectedMonth])
             ->where('orders.status', 'lunas')
             ->join('order_details', 'orders.id', '=', 'order_details.order_id')
             ->sum('order_details.amount');
@@ -109,10 +109,10 @@ class OrderService
         return DB::table('orders')
             ->join('order_details', 'orders.id', '=', 'order_details.order_id')
             ->where('orders.status', 'lunas')
-            ->whereDate('orders.created_at', '>=', $startDate)
-            ->selectRaw("TO_CHAR(orders.created_at, 'Mon YYYY') AS month, SUM(order_details.amount) AS total")
+            ->whereDate('orders.pickup_date', '>=', $startDate)
+            ->selectRaw("TO_CHAR(orders.pickup_date, 'Mon YYYY') AS month, SUM(order_details.amount) AS total")
             ->groupBy('month')
-            ->orderByRaw("MIN(orders.created_at)")
+            ->orderByRaw("MIN(orders.pickup_date)")
             ->get();
     }
 }

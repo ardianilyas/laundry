@@ -2,7 +2,7 @@
     <Head title="Layanan" />
     <AppLayout>
         <template #title>Daftar Layanan</template>
-        <template #desc> Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt quisquam nulla ad? </template>
+        <template #desc> Kelola daftar layanan pada Ibuk Laundry disini. </template>
 
         <Link :href="route('dashboard.layanan.create')">
             <Button>Create New Layanan</Button>

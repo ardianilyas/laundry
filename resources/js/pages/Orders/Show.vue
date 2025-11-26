@@ -109,7 +109,7 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from 'vue'
+import { onMounted, onUnmounted, reactive, ref } from 'vue'
 import AppLayout from '@/layouts/AppLayout.vue';
 import OrderStatus from '@/components/OrderStatus.vue';
 import { Button } from "@/components/ui/button"
@@ -128,31 +128,31 @@ const pay = () => {
     router.get(route('dashboard.orders.payment', localOrder.id));
 }
 
-// onMounted(() => {
-//     if(localOrder.id) {
-//         window.Echo.private(`order.${localOrder.id}`)
-//             .listen('.order.status.updated', (e: any) => {
-//                 if(localOrder.id === e.order_id) {
-//                     localOrder.status = e.status;
-//                 }
+onMounted(() => {
+    if(localOrder.id) {
+        window.Echo.private(`order.${localOrder.id}`)
+            .listen('.order.status.updated', (e: any) => {
+                if(localOrder.id === e.order_id) {
+                    localOrder.status = e.status;
+                }
                 
-//                 if (e.status === 'lunas') { // Parameter 'd' implicitly has an 'any' type.
-//                     localOrder.order_details.forEach((detail: any) => {
-//                     detail.payment_status = 'paid'
-//                     })
-//                 }
+                if (e.status === 'lunas') { // Parameter 'd' implicitly has an 'any' type.
+                    localOrder.order_details.forEach((detail: any) => {
+                    detail.payment_status = 'paid'
+                    })
+                }
 
-//                 // update invoice url jika ada perubahan
-//                 if (e.invoice_url) {
-//                     invoiceUrl.value = e.invoice_url
-//                 }
-//             });
-//     }
-// })
+                // update invoice url jika ada perubahan
+                if (e.invoice_url) {
+                    invoiceUrl.value = e.invoice_url
+                }
+            });
+    }
+})
 
-// onUnmounted(() => {
-//     if (localOrder.value?.id) {
-//         window.Echo.leave(`order.${localOrder.id}`);
-//     }
-// });
+onUnmounted(() => {
+    if (localOrder.value?.id) {
+        window.Echo.leave(`order.${localOrder.id}`);
+    }
+});
 </script>
