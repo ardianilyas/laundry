@@ -5,7 +5,6 @@ import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, Sid
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/vue3';
 import { LayoutGrid, NotepadText, FileClock, WashingMachine, User } from 'lucide-vue-next';
-import AppLogo from './AppLogo.vue';
 import useRoles from '@/composables/useRoles';
 
 const { hasRole } = useRoles();
@@ -56,8 +55,8 @@ const mainNavItems: NavItem[] = [
             <SidebarMenu>
                 <SidebarMenuItem>
                     <SidebarMenuButton size="lg" as-child>
-                        <Link :href="route('dashboard')">
-                            <AppLogo />
+                        <Link :href="route('dashboard')" class="text-xl font-semibold">
+                            Ibuk Laundry
                         </Link>
                     </SidebarMenuButton>
                 </SidebarMenuItem>
