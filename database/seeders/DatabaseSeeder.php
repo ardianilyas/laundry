@@ -30,9 +30,10 @@ class DatabaseSeeder extends Seeder
         $admin->assignRole('admin');
 
         User::factory(8)->create();
-        Service::factory(2)->create();
+        // Service::factory(2)->create();
 
         $this->call([
+            ServiceSeeder::class,
             OrderSeeder::class,
         ]);
         // Order::factory(350)->has(OrderDetail::factory(1), 'orderDetail')->create();
