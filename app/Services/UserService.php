@@ -66,7 +66,7 @@ class UserService
             Log::error('Fonnte CURL Error: ' . curl_error($ch));
         }
 
-        curl_close($ch);
+        // curl_close($ch);
 
         return $result;
     }
