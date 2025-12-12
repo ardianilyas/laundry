@@ -14,8 +14,8 @@ const props = defineProps({
     monthlyTransactions: Array
 });
 
-const labels = props.monthlyTransactions.map(item => item.month);
-const data = props.monthlyTransactions.map(item => item.total);
+const labels = props.monthlyTransactions?.map((item: any) => item.month) || [];
+const data = props.monthlyTransactions?.map((item: any) => item.total) || [];
 
 const chartData = {
     labels,
@@ -33,7 +33,7 @@ const chartData = {
 const chartOptions = {
     responsive: true,
     plugins: {
-        legend: { position: 'top' },
+        legend: { position: 'top' as const },
         title: {
             display: true,
             text: 'Transaksi Bulanan',
