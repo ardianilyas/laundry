@@ -32,8 +32,6 @@ class PdfController extends Controller
     
         $fileName = 'laporan_' . $month . '_' . time() . '.pdf';
 
-        // Storage::disk('public')->makeDirectory('invoices');
-
         try {
             $pdfContent = Browsershot::html($html)
                 ->setNodeBinary(trim(shell_exec('which node')))

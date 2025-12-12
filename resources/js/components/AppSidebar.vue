@@ -6,6 +6,7 @@ import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/vue3';
 import { LayoutGrid, NotepadText, FileClock, WashingMachine, User } from 'lucide-vue-next';
 import useRoles from '@/composables/useRoles';
+import AppLogo from './AppLogo.vue';
 
 const { hasRole } = useRoles();
 
@@ -56,7 +57,7 @@ const mainNavItems: NavItem[] = [
                 <SidebarMenuItem>
                     <SidebarMenuButton size="lg" as-child>
                         <Link :href="route('dashboard')" class="text-xl font-semibold">
-                            Ibuk Laundry
+                            <AppLogo />
                         </Link>
                     </SidebarMenuButton>
                 </SidebarMenuItem>
