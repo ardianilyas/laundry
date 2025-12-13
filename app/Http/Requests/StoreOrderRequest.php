@@ -26,7 +26,7 @@ class StoreOrderRequest extends FormRequest
             'services' => 'required|array|min:1',
             'services.*.service_id' => 'required|exists:services,id',
             'services.*.quantity' => 'required|numeric|min:1',
-            'services.*.estimated_date' => 'required|numeric|min:1',
+            'estimated_date' => 'required',
         ];
     }
 
@@ -41,9 +41,6 @@ class StoreOrderRequest extends FormRequest
             'services.*.quantity.required' => 'Quantity is required.',
             'services.*.quantity.numeric' => 'Quantity must be a number.',
             'services.*.quantity.min' => 'Quantity must be at least 1.',
-            'services.*.estimated_date.required' => 'Estimated date is required.',
-            'services.*.estimated_date.numeric' => 'Estimated date must be a number.',
-            'services.*.estimated_date.min' => 'Estimated date must be at least 1.',
         ];
     }
 }

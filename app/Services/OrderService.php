@@ -27,14 +27,14 @@ class OrderService
 
     public function storeNewOrder($data) {
         return DB::transaction(function () use ($data) {
-            $maxEstimated = collect($data['services'])->max(fn($item) => $item['estimated_date']);
+            $estimated_date = $data['estimated_date'];
 
             $order = Order::query()->create([
                 'user_id' => $data['user_id'],
                 'order_number' => 'ORD-' . uniqid(),
                 'status' => 'diterima',
                 'pickup_date' => now(),
-                'estimated_date' => now()->addDays($maxEstimated),
+                'estimated_date' => now()->addDays($estimated_date),
             ]);
 
             Log::info("Order created: ", [$order]);
@@ -45,14 +45,13 @@ class OrderService
                 $service = Service::query()->findOrFail($item['service_id']);
 
                 $quantity = $item['quantity'];
-                $estimated = $item['estimated_date'];
                 $amount = $quantity * $service->price;
                 $totalAmount += $amount;
 
                 $order->orderDetails()->create([
                     'service_id' => $service->id,
                     'quantity' => $quantity,
-                    'estimated_date' => now()->addDays($estimated),
+                    'estimated_date' => now()->addDays($estimated_date),
                     'price' => $service->price,
                     'amount' => $amount,
                 ]);
@@ -67,12 +66,58 @@ class OrderService
         });
     }
 
+    private function sendOrderFinishedWhatsApp($phone, $name, $orderId)
+    {
+        $token = env("FONNTE_TOKEN");
+
+        $message = "Halo *$name* 👋\n\n"
+            . "Pesanan laundry Anda dengan nomor *#$orderId* "
+            . "telah *SELESAI* ✅.\n\n"
+            . "Silakan datang ke Ibuk Laundry untuk pengambilan.\n\n"
+            . "Terima kasih 🙏";
+
+        if (app()->environment('local')) {
+            $devPhone = env('DEV_WHATSAPP', '6287877239702');
+            Log::info("Development mode: redirect WhatsApp from $phone to $devPhone");
+            $phone = $devPhone;
+        }
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, "https://api.fonnte.com/send");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, [
+            "target" => $phone,
+            "message" => $message,
+        ]);
+
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            "Authorization: $token",
+        ]);
+
+        $result = curl_exec($ch);
+
+        if (curl_errno($ch)) {
+            Log::error('Fonnte CURL Error: ' . curl_error($ch));
+        }
+
+        return $result;
+    }
+
     public function updateOrder(Order $order, $status) {
         return DB::transaction(function () use ($order, $status) {
             $order->update(['status' => $status]);
 
             if ($status === 'lunas') {
                 $order->orderDetails()->update(['payment_status' => 'paid']);
+            }
+
+            if ($status === 'selesai') {
+                $this->sendOrderFinishedWhatsApp(
+                    $order->user->phone,
+                    $order->user->name,
+                    $order->order_number
+                );
             }
 
             Event::dispatch(new OrderStatusUpdated($order));
@@ -102,9 +147,27 @@ class OrderService
             ->sum('order_details.amount');
     }
 
+    public function getTotalAmountPaidToday()
+    {
+        return DB::table('orders')
+            ->join('order_details', 'orders.id', '=', 'order_details.order_id')
+            ->whereDate('orders.updated_at', date('Y-m-d'))
+            ->where('orders.status', 'lunas')
+            ->sum('order_details.amount');
+    }
+
+    public function getTotalAmountThisYear()
+    {
+        return DB::table('orders')
+            ->join('order_details', 'orders.id', '=', 'order_details.order_id')
+            ->whereYear('orders.pickup_date', date('Y'))
+            ->where('orders.status', 'lunas')
+            ->sum('order_details.amount');
+    }
+
     public function getMonthlyTransactions()
     {
-        $startDate = now()->subMonth(5)->startOfMonth();
+        $startDate = now()->subMonth(11)->startOfMonth();
 
         return DB::table('orders')
             ->join('order_details', 'orders.id', '=', 'order_details.order_id')

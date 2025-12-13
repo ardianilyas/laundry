@@ -7,7 +7,9 @@ import { Head } from '@inertiajs/vue3';
 import useRoles from '@/composables/useRoles';
 
 defineProps({
+    totalPendapatanHariIni: Number,
     totalPendapatan: Number,
+    totalPendapatanTahunIni: Number,
     totalUser: Number,
     totalTransaksi: Number,
     totalTransaksiUser: Number,
@@ -31,8 +33,16 @@ const breadcrumbs: BreadcrumbItem[] = [
         <div v-if="hasRole('admin')" class="flex max-w-7xl min-h-screen flex-1 flex-col gap-4 rounded-xl p-4">
             <div class="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
                 <div class="p-6 border border-slate-200 rounded-md shadow-md">
+                    <h3>Total Pendapatan Hari Ini</h3>
+                    <p class="text-2xl font-semibold"> {{ formatCurrency(totalPendapatanHariIni) }} </p>
+                </div>
+                <div class="p-6 border border-slate-200 rounded-md shadow-md">
                     <h3>Total Pendapatan Bulan Ini</h3>
                     <p class="text-2xl font-semibold"> {{ formatCurrency(totalPendapatan) }} </p>
+                </div>
+                <div class="p-6 border border-slate-200 rounded-md shadow-md">
+                    <h3>Total Pendapatan Tahun Ini</h3>
+                    <p class="text-2xl font-semibold"> {{ formatCurrency(totalPendapatanTahunIni) }} </p>
                 </div>
                 <div class="p-6 border border-slate-200 rounded-md shadow-md">
                     <h3>Total Transaksi</h3>

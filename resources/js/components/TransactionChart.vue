@@ -21,7 +21,7 @@ const chartData = {
     labels,
     datasets: [
         {
-            label: 'Transaksi Bulanan',
+            label: 'Transaksi Bulanan (12 bulan terakhir)',
             data, 
             borderColor: '#3b82f6',
             backgroundColor: 'rgba(59, 130, 246, 0.2)',

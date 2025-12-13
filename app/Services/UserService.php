@@ -39,7 +39,7 @@ class UserService
     private function sendWhatsAppMessage($phone, $name, $mail, $password) 
     {
         $token = env("FONNTE_TOKEN");
-        $message = "Halo $name, akun anda telah berhasil dibuat, berikut informasi akun untuk dapat login melalui website Ibuk Laundry :\n\nUsername: *$name*\nEmail: *$mail*\nPassword: *$password*";
+        $message = "Halo $name, akun anda telah berhasil dibuat, berikut informasi akun untuk dapat login melalui website ibuklaundry.com :\n\nUsername: *$name*\nEmail: *$mail*\nPassword: *$password*";
 
         if (app()->environment('local')) {
             $devPhone = env('DEV_WHATSAPP', '6287877239702'); 
@@ -65,8 +65,6 @@ class UserService
         if (curl_errno($ch)) {
             Log::error('Fonnte CURL Error: ' . curl_error($ch));
         }
-
-        // curl_close($ch);
 
         return $result;
     }

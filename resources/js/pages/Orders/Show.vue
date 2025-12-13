@@ -26,7 +26,6 @@
                                 <th class="p-3 border-b">Berat (kg)</th>
                                 <th class="p-3 border-b">Harga Satuan</th>
                                 <th class="p-3 border-b">Total</th>
-                                <th class="p-3 border-b">Estimasi Selesai</th>
                                 <th class="p-3 border-b text-center">Status Pembayaran</th>
                             </tr>
                         </thead>
@@ -43,7 +42,6 @@
                                 <td class="p-3 border-b font-semibold">
                                     {{ formatCurrency(detail.amount) }}
                                 </td>
-                                <td class="p-3 border-b">{{ detail.estimated_date }}</td>
                                 <td class="p-3 border-b text-center">
                                     <span
                                         v-if="detail.payment_status === 'unpaid'"

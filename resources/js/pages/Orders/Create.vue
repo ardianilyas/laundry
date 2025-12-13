@@ -75,18 +75,6 @@
                                 :message="form.errors[`services.${index}.quantity` as keyof typeof form.errors]"
                             />
                         </div>
-
-                        <div>
-                            <Label>Estimasi hari</Label>
-                            <Input
-                                v-model="item.estimated_date"
-                                type="number"
-                                placeholder="Estimasi hari"
-                            />
-                            <InputError 
-                                :message="form.errors[`services.${index}.estimated_date` as keyof typeof form.errors]"
-                            />
-                        </div>
                     </div>
 
                     <Button
@@ -97,6 +85,16 @@
                     >
                         + Tambah Layanan
                     </Button>
+                </div>
+
+                <div>
+                    <Label>Estimasi Hari</Label>
+                    <Input
+                        v-model="form.estimated_date"
+                        type="number"
+                        placeholder="Estimasi hari"
+                    />
+                    <InputError :message="form.errors.estimated_date" />
                 </div>
 
                 <!-- Tombol submit -->
@@ -135,23 +133,24 @@ defineProps({
 interface ServiceItem {
   service_id: number | string;
   quantity: number | string;
-  estimated_date: number | string;
 }
 
 interface FormValues extends Record<string, any> {
   user_id: number | string;
+  estimated_date: number | string;
   services: ServiceItem[];
 }
 
 const form = useForm<FormValues>({
   user_id: '',
+  estimated_date: '',
   services: [
-    { service_id: '', quantity: '', estimated_date: '' }
+    { service_id: '', quantity: '' }
   ],
 })
 
 function addService() {
-  form.services.push({ service_id: '', quantity: '', estimated_date: '' })
+  form.services.push({ service_id: '', quantity: '' })
 }
 
 function removeService(index: number) {
